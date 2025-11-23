@@ -21,7 +21,9 @@ int main() {
     for (auto v : compressedData) {
         std::cout << int(v) << ", ";
     }
+    /*
     std::cout << std::endl << std::endl;
+
 
     // Decompress data
     std::cout << "Decompress: ";
@@ -29,6 +31,7 @@ int main() {
     for (auto v : decompressedData) {
         std::cout << int(v) << ", ";
     }
+    */
     std::cout << std::endl;
     return 0;
 }

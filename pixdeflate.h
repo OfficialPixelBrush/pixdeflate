@@ -3,6 +3,5 @@
 
 #include "defines.h"
 #include "deflate.h"
-#include "inflate.h"
 
 #endif // PIXDEFLATE_H

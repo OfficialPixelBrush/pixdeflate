@@ -9,13 +9,12 @@
 // going through the bit sequence until a 
 // value is hit
 
-#define BFINAL 0b00000001
-#define BTYPE  0b00000110
+#define BFINAL 1
 
-#define BTYPE_UNCOMPRESSED      0b00000000
-#define BTYPE_FIXED_HUFFMAN     0b00000010
-#define BTYPE_DYNAMIC_HUFFMAN   0b00000100
-#define BTYPE_RESERVED          0b00000110
+#define BTYPE_UNCOMPRESSED      0b00
+#define BTYPE_FIXED_HUFFMAN     0b01
+#define BTYPE_DYNAMIC_HUFFMAN   0b10
+#define BTYPE_RESERVED          0b11
 
 enum CompressionLevel {
     COMPRESSIONLEVEL_NONE,

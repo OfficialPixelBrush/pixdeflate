@@ -3,26 +3,26 @@
 // Write an uncompressed block of data
 int8_t WriteUncompressedBlock(
     [[maybe_unused]] std::vector<uint8_t>& data,
-    [[maybe_unused]] std::vector<uint8_t>& compressedData,
+    [[maybe_unused]] std::vector<bool>& compressedData,
     bool blockFinal = false
 ) {
-    uint8_t blockHeader = BTYPE_UNCOMPRESSED;
-    if (blockFinal) blockHeader |= BFINAL;
-    compressedData.push_back(blockHeader);
+    // Write Header
+    WriteBits(BTYPE_UNCOMPRESSED, 2, compressedData);
+    data.push_back(blockFinal);
+    // Write Length
     WriteShort( int16_t(data.size()), compressedData);
     WriteShort(~int16_t(data.size()), compressedData);
-    compressedData.insert(
-        compressedData.end(),
-        data.begin(),
-        data.end()
-    );
+    // Add raw data
+    for (auto v : data) {
+        WriteByte(v, compressedData);
+    }
     return COMPRESSIONRESULT_SUCCESS;
 }
 
 // Write an compressed block of data (static huffman codes)
 int8_t WriteStaticCompressedBlock(
     [[maybe_unused]] std::vector<uint8_t>& data,
-    [[maybe_unused]] std::vector<uint8_t>& compressedData,
+    [[maybe_unused]] std::vector<bool>& compressedData,
     bool blockFinal = false
 ) {
     uint8_t blockHeader = BTYPE_UNCOMPRESSED;
@@ -44,13 +44,19 @@ int8_t Compress(
     [[maybe_unused]] std::vector<uint8_t>& compressedData,
     [[maybe_unused]] int8_t compressionLevel
 ) {
+    std::vector<bool> compressedDataStream;
     switch (compressionLevel) {
         case COMPRESSIONLEVEL_NONE:
-            return WriteUncompressedBlock(data,compressedData);
+            WriteUncompressedBlock(data,compressedDataStream);
+            break;
+        case COMPRESSIONLEVEL_MAX:
         case COMPRESSIONLEVEL_ANY:
-            return WriteStaticCompressedBlock(data,compressedData);
+        case COMPRESSIONLEVEL_MIN:
+            WriteStaticCompressedBlock(data,compressedDataStream);
+            break;
         default:
             return COMPRESSIONRESULT_INVALID_LEVEL;
     }
-    return COMPRESSIONRESULT_FAILURE;
+    if (compressedDataStream.empty()) return COMPRESSIONRESULT_FAILURE;
+    return ConvertStreamToBytes(compressedData, compressedDataStream);
 }

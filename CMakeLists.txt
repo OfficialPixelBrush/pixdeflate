@@ -13,7 +13,6 @@ add_executable(
     PixDeflate
     helper.cpp
     deflate.cpp
-    inflate.cpp
     main.cpp
 )
 
