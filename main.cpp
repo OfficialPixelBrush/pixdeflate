@@ -17,7 +17,7 @@ int main() {
 
     // Compress data
     std::cout << "Compress: ";
-    std::cout << int(Compress(data,compressedData,COMPRESSIONLEVEL_NONE)) << std::endl;
+    std::cout << int(Compress(data,compressedData)) << std::endl;
     for (auto v : compressedData) {
         std::cout << int(v) << ", ";
     }

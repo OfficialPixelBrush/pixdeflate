@@ -2,6 +2,7 @@
 
 #include "defines.h"
 #include "helper.h"
+#include "huffman.h"
 
 // Compress data
 int8_t Compress(
